@@ -56,7 +56,7 @@ export default {
       activeQuestionIndex: 0,
       answerIsHover: -1,
       showConfirm: false,
-      selectedAnswer: false,
+      selectedAnswer: '',
       yourAnswer: '',
       solutionIsVisible: true,
       solution: '',
@@ -86,7 +86,16 @@ export default {
         }
 
         this.solutionIsVisible = true;
-    }
+
+        setTimeout(() => {
+          this.activeQuestionIndex++;
+          this.showConfirm = false;
+          this.solutionIsVisible = false;
+          this.solution = '';
+          this.selectedAnswer = 0;
+        }, '3000');
+        
+    },
   }
 }
 
