@@ -1,6 +1,6 @@
 <script>
 
-import AppHeader from './components/AppHeader.vue';
+import MenuPanel from '../components/MenuPanel.vue';
 
 export default {
   data() {
@@ -10,7 +10,7 @@ export default {
 },
 
  components: {
-  AppHeader,
+  MenuPanel,
 }
  }
 
@@ -19,8 +19,7 @@ export default {
 
 <template>
 
-<AppHeader></AppHeader>
-<router-view></router-view>
+  <MenuPanel></MenuPanel>
 
 
 </template>

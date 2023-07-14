@@ -1,7 +1,7 @@
 <script>
 
 export default {
-    name: 'GamePanel',
+    name: 'GamePage',
   data() {
     return {
         QuestionAndAnswers: [
@@ -61,6 +61,7 @@ export default {
       solutionIsVisible: true,
       solution: '',
       totalPoints: 0,
+
     }
   },
 
@@ -82,8 +83,11 @@ export default {
 
         if(this.yourAnswer.correct == false) {
             this.solution = 'La risposta è sbagliata'
+            document.querySelector('.definitive').classList.add('failed');
+
         } else {
             this.solution = 'La risposta è corretta'
+            document.querySelector('.definitive').classList.add('correct');
             this.totalPoints += 25;
         }
 
@@ -95,6 +99,8 @@ export default {
           this.solutionIsVisible = false;
           this.solution = '';
           this.selectedAnswer = 0;
+          document.querySelector('.definitive').classList.remove('failed');
+          document.querySelector('.definitive').classList.remove('correct');
         }, '3000');
         
     },
@@ -103,14 +109,7 @@ export default {
 
 </script>
 
-<template>
-    <header>
-        <div id="logo-container">
-            <img src="https://boolean.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F0b8e1102-7ff4-4870-a39e-ef625253af75%2Flogo.png?id=d1419994-97c4-4690-b349-03db5eada926&table=block&spaceId=4c49ff97-016b-4669-8de5-4479dd1a86e1&width=480&userId=&cache=v2" alt="logo-img">
-        </div>
-    </header>
-
-    
+<template>    
     
     <main>
         <div class="container">
@@ -150,33 +149,6 @@ export default {
 
 <style lang='scss' scoped>
 
-    header {
-        height: 300px;
-        background-color: #090b8c;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-     
-            #logo-container {
-                margin: 0 auto;
-
-                width: 250px;
-                height: 250px;
-                
-                display: flex;
-                justify-content: center;
-                align-items: center;
-    
-                img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
-            }
-
-    }
-
     main {
         height: 600px;
         color: white;
@@ -215,6 +187,15 @@ export default {
 
                 &.definitive {
                     background-color: #ffffff54;
+                }
+
+                &.failed {
+                  background-color: rgba(255, 0, 0, 0.281);
+                }
+
+                &.correct {
+                  background-color: rgba(124, 250, 21, 0.281);
+
                 }
 
 
