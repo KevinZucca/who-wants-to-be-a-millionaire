@@ -60,6 +60,7 @@ export default {
       yourAnswer: '',
       solutionIsVisible: true,
       solution: '',
+      totalPoints: 0,
     }
   },
 
@@ -83,6 +84,7 @@ export default {
             this.solution = 'La risposta è sbagliata'
         } else {
             this.solution = 'La risposta è corretta'
+            this.totalPoints += 25;
         }
 
         this.solutionIsVisible = true;
@@ -113,6 +115,8 @@ export default {
     <main>
         <div class="container">
 
+          <h1>Domanda numero {{ this.activeQuestionIndex + 1 }}</h1>
+
             <div id="question" class="block">
                 {{this.QuestionAndAnswers[activeQuestionIndex].question}}
             </div>
@@ -136,6 +140,8 @@ export default {
         </div>
 
         <h3>{{ this.solution }}</h3>
+
+        <p id="points">Punteggio: {{ this.totalPoints }} pt</p>
 
     </main>
 
@@ -175,6 +181,13 @@ export default {
         height: 600px;
         color: white;
         background-color: #11093a;
+        position: relative;
+
+        #points {
+          position: absolute;
+          top: 5px;
+          right: 100px;
+        }
 
         .container {
             margin: 0 auto;
@@ -187,7 +200,7 @@ export default {
 
             .block {
                 height: 50px;
-                width: 350px;
+                width: 400px;
                 border: 2px solid white;
                 border-radius: 15px;
 
