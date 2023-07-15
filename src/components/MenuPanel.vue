@@ -21,9 +21,11 @@ export default {
 <div class="container">
     <div id="menu">
         <ul>
-            <li>
-                <router-link class="nav-link" exact-active-class="active" :to="{ name: 'game-page'}"><p>Gioca!</p></router-link>
-            </li>
+            <router-link class="nav-link" exact-active-class="active" :to="{ name: 'game-page'}">
+                <li>
+                    <p>Gioca!</p>
+                </li>
+            </router-link>
             <li>
                 <p>Classifiche</p>
             </li>
@@ -51,24 +53,42 @@ export default {
     align-items: center;
 
     #menu {
-        width: 50%;
-        background-color: #ffffff46;
+        width: 30%;
         height: 80%;
-
-        border-radius: 5%;
 
         ul {
             display: flex;
             justify-content: center;
             align-items: center;
             flex-flow: column;
+            gap: 1.5em;
 
             list-style-type: none;
             padding-left: 0;
+
+            .nav-link {
+                    text-decoration: none;
+                }
             
             li {
-                border-bottom: 1px solid rgba(0, 0, 0, 0.288);
+                width: 400px;
+                height: 60px;
+
+                border: 1px solid rgba(255, 255, 255, 0.753);
+                background-color: #1f1747;
+                border-radius: 20px;
                 font-size: 1.5em;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transition: all .2s ease-in-out;
+
+                &:hover {
+                    scale: 1.1;
+                    cursor: pointer;
+                    background-color: #393358;
+                }
 
                 p {
                     text-decoration: none;
