@@ -2,196 +2,13 @@
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import axios from 'axios';
 
 export default {
     name: 'GamePage',
   data() {
     return {
-      QuestionAndAnswers: [
-  {
-    question: "Qual è il più grande oceano del mondo?",
-    answers: [
-      { text: "Oceano Atlantico", correct: false },
-      { text: "Oceano Indiano", correct: false },
-      { text: "Oceano Pacifico", correct: true },
-      { text: "Oceano Artico", correct: false }
-    ]
-  },
-  {
-    question: "Chi ha dipinto il quadro 'La notte stellata'?",
-    answers: [
-      { text: "Pablo Picasso", correct: false },
-      { text: "Vincent van Gogh", correct: true },
-      { text: "Leonardo da Vinci", correct: false },
-      { text: "Claude Monet", correct: false }
-    ]
-  },
-  {
-    question: "Qual è l'elemento chimico con il simbolo 'Fe'?",
-    answers: [
-      { text: "Ferro", correct: true },
-      { text: "Fluoro", correct: false },
-      { text: "Fosforo", correct: false },
-      { text: "Francio", correct: false }
-    ]
-  },
-  {
-    question: "In quale paese si trova la Grande Muraglia?",
-    answers: [
-      { text: "Giappone", correct: false },
-      { text: "India", correct: false },
-      { text: "Cina", correct: true },
-      { text: "Italia", correct: false }
-    ]
-  },
-  {
-    question: "Chi ha scritto il romanzo '1984'?",
-    answers: [
-      { text: "George Orwell", correct: true },
-      { text: "J.R.R. Tolkien", correct: false },
-      { text: "F. Scott Fitzgerald", correct: false },
-      { text: "Aldous Huxley", correct: false }
-    ]
-  },
-  {
-    question: "Qual è l'organo più grande del corpo umano?",
-    answers: [
-      { text: "Cervello", correct: false },
-      { text: "Polmone", correct: false },
-      { text: "Cuore", correct: false },
-      { text: "Pelle", correct: true }
-    ]
-  },
-  {
-    question: "Quale pianeta del sistema solare ha il giorno più lungo?",
-    answers: [
-      { text: "Venere", correct: true },
-      { text: "Marte", correct: false },
-      { text: "Giove", correct: false },
-      { text: "Saturno", correct: false }
-    ]
-  },
-  {
-    question: "Chi ha scritto il romanzo 'Il conte di Montecristo'?",
-    answers: [
-      { text: "Victor Hugo", correct: false },
-      { text: "Alexandre Dumas", correct: true },
-      { text: "Gustave Flaubert", correct: false },
-      { text: "Honoré de Balzac", correct: false }
-    ]
-  },
-  {
-    question: "Qual è il più alto vulcano attivo sulla Terra?",
-    answers: [
-      { text: "Vesuvio", correct: false },
-      { text: "Etna", correct: false },
-      { text: "Kilauea", correct: true },
-      { text: "Stromboli", correct: false }
-    ]
-  },
-  {
-    question: "In quale anno è stata fondata la Microsoft?",
-    answers: [
-      { text: "1975", correct: true },
-      { text: "1985", correct: false },
-      { text: "1995", correct: false },
-      { text: "2005", correct: false }
-    ]
-  },
-  {
-    question: "Qual è la valuta ufficiale del Giappone?",
-    answers: [
-      { text: "Dollaro", correct: false },
-      { text: "Yuan", correct: false },
-      { text: "Euro", correct: false },
-      { text: "Yen", correct: true }
-    ]
-  },
-  {
-    question: "Qual è il fiume più lungo del mondo?",
-    answers: [
-      { text: "Nilo", correct: true },
-      { text: "Mississippi", correct: false },
-      { text: "Amazzoni", correct: false },
-      { text: "Danubio", correct: false }
-    ]
-  },
-  {
-    question: "Chi ha scritto il romanzo 'Guerra e pace'?",
-    answers: [
-      { text: "Leo Tolstoj", correct: true },
-      { text: "Fyodor Dostoevsky", correct: false },
-      { text: "Anton Chekhov", correct: false },
-      { text: "Mikhail Bulgakov", correct: false }
-    ]
-  },
-  {
-    question: "Qual è la montagna più alta del mondo?",
-    answers: [
-      { text: "K2", correct: false },
-      { text: "Everest", correct: true },
-      { text: "Kilimanjaro", correct: false },
-      { text: "Monte Bianco", correct: false }
-    ]
-  },
-  {
-    question: "Chi ha scritto il romanzo 'Don Chisciotte'?",
-    answers: [
-      { text: "Miguel de Cervantes", correct: true },
-      { text: "Gabriel García Márquez", correct: false },
-      { text: "Jorge Luis Borges", correct: false },
-      { text: "Pablo Neruda", correct: false }
-    ]
-  },
-  {
-    question: "In quale paese si trova la Cappella Sistina?",
-    answers: [
-      { text: "Italia", correct: true },
-      { text: "Francia", correct: false },
-      { text: "Spagna", correct: false },
-      { text: "Germania", correct: false }
-    ]
-  },
-  {
-    question: "Chi ha dipinto il quadro 'Il bacio'?",
-    answers: [
-      { text: "Auguste Rodin", correct: false },
-      { text: "Gustav Klimt", correct: true },
-      { text: "Salvador Dalí", correct: false },
-      { text: "Leonardo da Vinci", correct: false }
-    ]
-  },
-  {
-    question: "Quale città è conosciuta come la 'Città eterna'?",
-    answers: [
-      { text: "Parigi", correct: false },
-      { text: "Atene", correct: false },
-      { text: "Roma", correct: true },
-      { text: "Londra", correct: false }
-    ]
-  },
-  {
-    question: "Qual è l'elemento chimico con il simbolo 'Hg'?",
-    answers: [
-      { text: "Mercurio", correct: true },
-      { text: "Idrogeno", correct: false },
-      { text: "Argento", correct: false },
-      { text: "Oro", correct: false }
-    ]
-  },
-  {
-    question: "Chi ha scritto il romanzo 'Orgoglio e pregiudizio'?",
-    answers: [
-      { text: "Emily Brontë", correct: false },
-      { text: "Jane Austen", correct: true },
-      { text: "Charlotte Brontë", correct: false },
-      { text: "Virginia Woolf", correct: false }
-    ]
-  }
-],
-
-
-
+      QuestionAndAnswers: [],
       activeQuestionIndex: 0,
       answerIsHover: -1,
       showConfirm: false,
@@ -207,6 +24,53 @@ export default {
   },
 
   methods: {
+    generateQuests() {
+      axios.get('https://opentdb.com/api.php?amount=10&difficulty=medium').then((response) => {
+        console.log(response.data.results);
+
+        response.data.results.forEach(element => {
+          this.addNewQuest(element);
+        });
+                // {
+        //   question: "",
+        //   answers: [
+        //     { text: "", correct:  },
+        //     { text: "", correct:  },
+        //     { text: "", correct:  },
+        //     { text: "", correct:  }
+        //   ]
+        // }
+      });
+    },
+
+    addNewQuest(questionApi) {
+        const q = {
+          question: null,
+          answers: []
+        };
+        
+        this.QuestionAndAnswers.push(q);
+        
+        q.question = questionApi.question;//nome domanda da questionApi
+
+        console.log(q.question)
+
+        q.answers.push({
+          text: questionApi.correct_answer,
+          correct: true,
+          rnd: Math.random()
+        });
+        questionApi.incorrect_answers.forEach(answer => {//verificare campo da cui recuperare elenco risposte
+          q.answers.push( {
+            text: answer,//testo risposta da elenco risposte questionAPI
+            correct: false,//flag correttezza risposta da elenco risposte questionAPI
+            rnd: Math.random()
+          })
+        });
+        
+        q.answers = q.answers.sort((a, b) => a.rnd - b.rnd);
+    },
+
     activeAnswer(index) {
         this.answerIsHover = index;
     },
@@ -250,11 +114,12 @@ export default {
         }, '3000');
 
 
-    },
+    }
   },
 
   mounted() {
     AOS.init();
+    this.generateQuests();
   }
 }
 
@@ -270,35 +135,38 @@ export default {
       </div>
 
       <div v-else class="container">
-
-        <h1>Domanda numero {{ this.activeQuestionIndex + 1 }} / {{ this.QuestionAndAnswers.length }}</h1>
-
-          <div id="question" class="block">
-              {{this.QuestionAndAnswers[activeQuestionIndex].question}}
+        <div id="play-container" v-if="this.QuestionAndAnswers.length > 0">
+          <h1>Domanda numero {{ this.activeQuestionIndex + 1 }} / {{ this.QuestionAndAnswers.length }}</h1>
+  
+            <div id="question" class="block">
+                {{this.QuestionAndAnswers[activeQuestionIndex].question}}
+            </div>
+  
+            <div id="answers-container">
+                <div v-for="(answer, index) in QuestionAndAnswers[activeQuestionIndex].answers"
+                  
+                  :class="{'active': this.answerIsHover == index, 'definitive' : this.selectedAnswer == index}"  
+                  @mouseover="activeAnswer(index)" 
+                  @mouseleave="this.answerIsHover = -2" 
+                  @click="selectAnswer(index)"
+                  class="answer block">{{ answer.text }}
+                </div>
+            </div>
+      
+  
           </div>
-
-          <div id="answers-container">
-              <div v-for="(answer, index) in QuestionAndAnswers[activeQuestionIndex].answers"
-                
-                :class="{'active': this.answerIsHover == index, 'definitive' : this.selectedAnswer == index}"  
-                @mouseover="activeAnswer(index)" 
-                @mouseleave="this.answerIsHover = -2" 
-                @click="selectAnswer(index)"
-                class="answer block">{{ answer.text }}
-              </div>
+  
+          <div id="confirm-box" v-show="this.showConfirm">
+              <p>E' la tua risposta definitiva?</p>
+              <button @click="checkAnswer()">Sì</button>
           </div>
-    
+  
+          <h3>{{ this.solution }}</h3>
+  
+          <p id="points">Punteggio: {{ this.totalPoints }} pt</p>
 
         </div>
 
-        <div id="confirm-box" v-show="this.showConfirm">
-            <p>E' la tua risposta definitiva?</p>
-            <button @click="checkAnswer()">Sì</button>
-        </div>
-
-        <h3>{{ this.solution }}</h3>
-
-        <p id="points">Punteggio: {{ this.totalPoints }} pt</p>
 
 
     </main>
@@ -329,11 +197,20 @@ export default {
             flex-flow: column;
             align-items: center;
 
+            #play-container {
+              display: flex;
+              align-items: center;
+              flex-flow: column;
+            }
+
             .block {
                 height: 50px;
                 width: 400px;
                 border: 2px solid white;
                 border-radius: 15px;
+                padding: 10px;
+
+                text-align: center;
 
                 display: flex;
                 justify-content: center;
