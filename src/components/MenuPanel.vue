@@ -1,13 +1,16 @@
 <script>
 
-
 export default {
     name: 'MenuPanel',
   data() {
     return {
-      
+      difficulty: 'easy',
   }
 },
+
+ methods: {
+
+ },
 
  components: {
 }
@@ -20,20 +23,18 @@ export default {
 
 <div class="container">
     <div id="menu">
-        <ul>
-            <router-link class="nav-link" exact-active-class="active" :to="{ name: 'game-page'}">
-                <li>
-                    <p>Gioca!</p>
-                </li>
-            </router-link>
-            <li>
-                <p>Classifiche</p>
-            </li>
-            <li>
-                <p>Impostazioni</p>
-            </li>
-        </ul>
 
+        <h3>Select difficulty</h3>
+        <select class="selection" v-model="this.difficulty">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+
+        <router-link class="menu-link selection" exact-active-class="active" :to="{ name: 'game-page', query: { difficulty: difficulty }}">
+            <p>Play!</p>
+        </router-link>
+        
     </div>
 </div>
 
@@ -54,47 +55,62 @@ export default {
 
     #menu {
         width: 30%;
-        height: 80%;
+        height: 100%;
 
-        ul {
+        padding-top: 50px;
+
+        display: flex;
+        align-items: center;
+        flex-flow: column;
+        gap: 1.5em;
+
+        h3 {
+            margin-bottom: 0;
+        }
+
+        .selection {
+            border: 1px solid rgba(255, 255, 255, 0.753);
+            background-color: #1f1747;
+            border-radius: 20px;
+            font-size: 1.5em;
+            color: white;
+            text-align: center;
+
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-flow: column;
-            gap: 1.5em;
+            transition: all .2s ease-in-out;
+        }
 
-            list-style-type: none;
-            padding-left: 0;
+        .menu-link {
+            width: 400px;
+            height: 60px;
+            text-decoration: none;
 
-            .nav-link {
-                    text-decoration: none;
-                }
-            
-            li {
-                width: 400px;
-                height: 60px;
-
-                border: 1px solid rgba(255, 255, 255, 0.753);
-                background-color: #1f1747;
-                border-radius: 20px;
-                font-size: 1.5em;
-
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                transition: all .2s ease-in-out;
-
-                &:hover {
-                    scale: 1.1;
-                    cursor: pointer;
-                    background-color: #393358;
-                }
-
-                p {
-                    text-decoration: none;
-                    color: white;
-                }
+            &:hover {
+                scale: 1.1;
+                cursor: pointer;
+                background-color: #393358;
             }
+            
+            p {
+                text-decoration: none;
+                color: white;
+            }
+        }
+
+        select {
+            width: 150px;
+            height: 70px;
+
+            option {
+                padding: 10px;
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+
         }
     }
 }

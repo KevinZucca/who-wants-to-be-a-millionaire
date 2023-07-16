@@ -19,13 +19,15 @@ export default {
       totalPoints: 0,
 
       gameOver: false,
+      difficulty: this.$route.query.difficulty,
+
 
     }
   },
 
   methods: {
     generateQuests() {
-      axios.get('https://opentdb.com/api.php?amount=10&difficulty=medium').then((response) => {
+      axios.get('https://opentdb.com/api.php?amount=10&difficulty=' + this.difficulty).then((response) => {
         console.log(response.data.results);
 
         response.data.results.forEach(element => {
@@ -46,7 +48,7 @@ export default {
     addNewQuest(questionApi) {
         const q = {
           question: null,
-          answers: []
+          answers: [],
         };
         
         this.QuestionAndAnswers.push(q);
@@ -130,13 +132,13 @@ export default {
     <main>
 
       <div  v-if="this.gameOver" class="container">
-        <p id="game-over">Gioco terminato! il tuo punteggio totale è: {{ this.totalPoints }} pt</p>
-        <router-link class="nav-link" exact-active-class="active" :to="{ name: 'home'}"><button>Torna al menù</button></router-link>
+        <p id="game-over">The game is over! your total points are: {{ this.totalPoints }} pt</p>
+        <router-link class="nav-link" exact-active-class="active" :to="{ name: 'home'}"><button>Go back to menù</button></router-link>
       </div>
 
       <div v-else class="container">
         <div id="play-container" v-if="this.QuestionAndAnswers.length > 0">
-          <h1>Domanda numero {{ this.activeQuestionIndex + 1 }} / {{ this.QuestionAndAnswers.length }}</h1>
+          <h1>Question number {{ this.activeQuestionIndex + 1 }} / {{ this.QuestionAndAnswers.length }}</h1>
   
             <div id="question" class="block">
                 {{this.QuestionAndAnswers[activeQuestionIndex].question}}
@@ -157,13 +159,13 @@ export default {
           </div>
   
           <div id="confirm-box" v-show="this.showConfirm">
-              <p>E' la tua risposta definitiva?</p>
+              <p>Is it your definitive answer?</p>
               <button @click="checkAnswer()">Sì</button>
           </div>
   
           <h3>{{ this.solution }}</h3>
   
-          <p id="points">Punteggio: {{ this.totalPoints }} pt</p>
+          <p id="points">Points: {{ this.totalPoints }} pt</p>
 
         </div>
 
@@ -177,7 +179,6 @@ export default {
 <style lang='scss' scoped>
 
     main {
-        height: 600px;
         color: white;
         background-color: #11093a;
         position: relative;
