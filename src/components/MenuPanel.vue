@@ -44,7 +44,7 @@ export default {
 <style lang="scss" scoped>
 
 .container {
-    height: 600px;
+    height: calc(100vh - 300px);
     color: white;
     background-color: #11093a;
     position: relative;
@@ -90,7 +90,7 @@ export default {
             &:hover {
                 scale: 1.1;
                 cursor: pointer;
-                background-color: #393358;
+                background-color: #090b8c82;
             }
             
             p {
@@ -101,7 +101,7 @@ export default {
 
         select {
             width: 150px;
-            height: 70px;
+            height: 50px;
 
             option {
                 padding: 10px;

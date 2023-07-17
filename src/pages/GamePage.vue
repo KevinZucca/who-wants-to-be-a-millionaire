@@ -20,14 +20,35 @@ export default {
 
       gameOver: false,
       difficulty: this.$route.query.difficulty,
+      towerIsVisible: false,
+      activeTowerIndex: 14,
 
+      towerLevels: [
+        '$1 MILLION',
+        '$500.000',
+         '$250.000',
+         '$125.000',
+         '$64.000',
+         '$32.000',
+         '$16.000',
+         '$8.000',
+         '$4.000',
+         '$2.000',
+         '$1.000',
+         '$500',
+         '$300',
+         '$200',
+         '$100'
+      ],
+
+      modalIsVisible: false,
 
     }
   },
 
   methods: {
     generateQuests() {
-      axios.get('https://opentdb.com/api.php?amount=10&difficulty=' + this.difficulty).then((response) => {
+      axios.get('https://opentdb.com/api.php?amount=15&difficulty=' + this.difficulty).then((response) => {
         console.log(response.data.results);
 
         response.data.results.forEach(element => {
@@ -89,13 +110,31 @@ export default {
 
 
         if(this.yourAnswer.correct == false) {
-            this.solution = 'La risposta è sbagliata'
+            this.solution = 'The answer is wrong'
             document.querySelector('.definitive').classList.add('failed');
+            this.showConfirm = false;
 
+            setTimeout(() => {
+              this.towerIsVisible = true;
+              setTimeout(() => {
+                this.towerIsVisible = false;
+              }, '4000');
+            }, '3000');
         } else {
-            this.solution = 'La risposta è corretta'
+            this.solution = 'Correct answer!'
             document.querySelector('.definitive').classList.add('correct');
             this.totalPoints += 25;
+            this.showConfirm = false;
+
+            setTimeout(() => {
+              this.towerIsVisible = true;
+              setTimeout(() => {
+                this.activeTowerIndex--;
+              }, '1000');
+              setTimeout(() => {
+                this.towerIsVisible = false;
+              }, '4000');
+            }, '3000');
         }
 
         this.solutionIsVisible = true;
@@ -116,7 +155,8 @@ export default {
         }, '3000');
 
 
-    }
+    },
+
   },
 
   mounted() {
@@ -132,8 +172,9 @@ export default {
     <main>
 
       <div  v-if="this.gameOver" class="container">
-        <p id="game-over">The game is over! your total points are: {{ this.totalPoints }} pt</p>
-        <router-link class="nav-link" exact-active-class="active" :to="{ name: 'home'}"><button>Go back to menù</button></router-link>
+        <p id="game-over">The game is over! You won</p>
+        <p id="money">{{ this.towerLevels[this.activeTowerIndex] }} </p>
+        <router-link class="nav-link" exact-active-class="active" :to="{ name: 'home'}"><button id="menu-back">Go back to menù</button></router-link>
       </div>
 
       <div v-else class="container">
@@ -160,16 +201,38 @@ export default {
   
           <div id="confirm-box" v-show="this.showConfirm">
               <p>Is it your definitive answer?</p>
-              <button @click="checkAnswer()">Sì</button>
+              <button @click="checkAnswer()">Yes</button>
           </div>
   
           <h3>{{ this.solution }}</h3>
   
-          <p id="points">Points: {{ this.totalPoints }} pt</p>
-
         </div>
 
 
+        <div id="tower" v-if="this.towerIsVisible">
+          <table>
+              <tr v-for="(level, index) in this.towerLevels">
+                <th :class="index == this.activeTowerIndex ? 'active' : ''">{{level}}</th>
+              </tr>
+          </table>
+        </div>
+
+
+        <button @click="this.modalIsVisible = !this.modalIsVisible" type="button" class="btn btn-primary modal-button" data-toggle="modal" data-target="#exampleModal">
+            Go back to menù
+        </button>
+
+        <div v-if="this.modalIsVisible == true" id="modal">
+            <strong>Are you sure you want to quit the current game?</strong>
+
+            <div id="selections">
+                <button id="keep-play" @click="this.modalIsVisible = false">No, i keep play</button>
+                
+                <router-link class="nav-link" exact-active-class="active" :to="{ name: 'home'}">
+                    <button @click="this.modalIsVisible = false" id="stop-play">Yes, take me out</button>
+                </router-link>
+            </div>
+        </div>
 
     </main>
 
@@ -179,6 +242,7 @@ export default {
 <style lang='scss' scoped>
 
     main {
+        height: calc(100vh - 300px);
         color: white;
         background-color: #11093a;
         position: relative;
@@ -197,6 +261,33 @@ export default {
             display: flex;
             flex-flow: column;
             align-items: center;
+
+            #game-over {
+              font-size: 3em;
+            }
+
+            #money {
+              font-size: 4em;
+              color: #ff9900;
+              margin-top: 0;
+            }
+
+            #menu-back {
+              width: 300px;
+              height: 100px;
+              border-radius: 20px;
+
+                border: none;
+                background-color: #17198a;
+                color: white;
+
+                font-size: 1.5em;
+
+                &:hover {
+                    background-color: #2e2f8a;
+                    cursor: pointer;
+                }
+            }
 
             #play-container {
               display: flex;
@@ -232,7 +323,6 @@ export default {
 
                 &.correct {
                   background-color: rgba(124, 250, 21, 0.281);
-
                 }
 
 
@@ -289,6 +379,120 @@ export default {
 
         h3 {
             text-align: center;
+            margin-top: 70px;
         }
+
+        #tower {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+
+          width: 100%;
+          height: 100%;
+
+          background-image: url('https://cdn.wallpapersafari.com/79/79/4p27kj.jpg');
+          background-size: cover;
+
+          z-index: 4;
+
+          table {
+            width: 20%;
+            height: 60%;
+            font-size: 2.5em;
+
+            padding: 20px;
+            background-color: #ffffff11;
+            th {
+              color: #ff9900;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              &.active {
+                background-color: #090b8c;
+                border: 1px solid rgba(255, 255, 255, 0.436);
+              }
+            }
+          }
+        }
+
+        .modal-button {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+
+        width: 150px;
+        height: 70px;
+
+        font-size: 1.2em;
+        border-radius: 20px;
+
+        background-color: rgba(78, 78, 209, 0.434);
+        color: white;
+        border: none;
+
+        &:hover {
+          cursor: pointer;
+        }
+    }
+
+    #modal {
+        width: 50%;
+        height: 50%;
+        position: fixed;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
+
+        background-color: #000000;
+        color: rgba(255, 255, 255, 0.74);
+        opacity: 90%;
+
+        z-index: 1;
+
+        strong {
+          font-size: 1.3em;
+          text-align: center;
+        }
+
+        #selections {
+            display: flex;
+            gap: 2em;
+            margin-top: 20px;
+
+            button {
+                font-size: 1.2em;
+                padding: 0.5em;
+
+                color: white;
+                border: none;
+                border-radius: 10px;
+                transition: all .2s ease-in-out;
+
+                &#stop-play {
+                    background-color: rgb(106, 200, 106);
+                }
+
+                &#keep-play {
+                    background-color: rgb(190, 76, 76);
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    scale: 1.1;
+                }
+            }
+        }
+      }
     }
 </style>
