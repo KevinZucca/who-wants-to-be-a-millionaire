@@ -21,7 +21,7 @@ export default {
 
 <template>
 
-<div class="container">
+<div class="my-container">
     <div id="menu">
 
         <h3>Select difficulty</h3>
@@ -43,8 +43,10 @@ export default {
 
 <style lang="scss" scoped>
 
-.container {
+.my-container {
     height: calc(100vh - 300px);
+    width: 100%;
+    
     color: white;
     background-color: #11093a;
     position: relative;

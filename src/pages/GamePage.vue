@@ -42,6 +42,7 @@ export default {
       ],
 
       modalIsVisible: false,
+      correctAnswer: '',
 
     }
   },
@@ -49,10 +50,10 @@ export default {
   methods: {
     generateQuests() {
       axios.get('https://opentdb.com/api.php?amount=15&difficulty=' + this.difficulty).then((response) => {
-        console.log(response.data.results);
 
         response.data.results.forEach(element => {
           this.addNewQuest(element);
+
         });
                 // {
         //   question: "",
@@ -75,8 +76,6 @@ export default {
         this.QuestionAndAnswers.push(q);
         
         q.question = questionApi.question;//nome domanda da questionApi
-
-        console.log(q.question)
 
         q.answers.push({
           text: questionApi.correct_answer,
@@ -110,7 +109,7 @@ export default {
 
 
         if(this.yourAnswer.correct == false) {
-            this.solution = 'The answer is wrong'
+            this.solution = 'The answer is wrong';
             document.querySelector('.definitive').classList.add('failed');
             this.showConfirm = false;
 
@@ -162,7 +161,8 @@ export default {
   mounted() {
     AOS.init();
     this.generateQuests();
-  }
+  },
+
 }
 
 </script>
@@ -177,17 +177,16 @@ export default {
         <router-link class="nav-link" exact-active-class="active" :to="{ name: 'home'}"><button id="menu-back">Go back to menù</button></router-link>
       </div>
 
-      <div v-else class="container">
+      <div v-else class="container" data-aos="fade-right" data-aos-duration="1200">
         <div id="play-container" v-if="this.QuestionAndAnswers.length > 0">
           <h1>Question number {{ this.activeQuestionIndex + 1 }} / {{ this.QuestionAndAnswers.length }}</h1>
   
-            <div id="question" class="block">
-                {{this.QuestionAndAnswers[activeQuestionIndex].question}}
-            </div>
+            <p id="question" class="block" v-html="this.QuestionAndAnswers[activeQuestionIndex].question">
+                
+            </p>
   
             <div id="answers-container">
                 <div v-for="(answer, index) in QuestionAndAnswers[activeQuestionIndex].answers"
-                  
                   :class="{'active': this.answerIsHover == index, 'definitive' : this.selectedAnswer == index}"  
                   @mouseover="activeAnswer(index)" 
                   @mouseleave="this.answerIsHover = -2" 
