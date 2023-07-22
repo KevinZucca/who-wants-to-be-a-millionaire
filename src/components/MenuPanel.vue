@@ -98,8 +98,10 @@ export default {
             p {
                 text-decoration: none;
                 color: white;
+                margin-bottom: 4px;
             }
         }
+
 
         select {
             width: 150px;
