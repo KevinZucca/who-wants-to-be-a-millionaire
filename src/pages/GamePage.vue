@@ -62,6 +62,7 @@ export default {
       confirmHelp: false,
       helpIndex: 0,
       helpUsed: [],
+      friendHelpIsVisible: false,
 
     }
   },
@@ -164,6 +165,7 @@ export default {
           document.querySelector('.definitive').classList.remove('failed');
           document.querySelector('.definitive').classList.remove('correct');
           answersContainer.style.pointerEvents = ('auto');
+          this.friendHelpIsVisible = false;
           if(this.activeQuestionIndex >= this.QuestionAndAnswers.length){
             this.gameOver = true;
             this.activeQuestionIndex = false;
@@ -209,9 +211,20 @@ export default {
         });
         }, 4000);
 
-      } else {
+      } else if (index == 0 && answers.length <= 2) {
         alert("You can't use the fifty fifty on a true false question")
-      }
+
+      } else if (index == 1) {
+
+        helpImg.classList.add('used');
+        for(let i = 0; i < answers.length; i++){
+          if(answers[i].correct == true){
+            this.correctAnswer = i
+          }
+        }
+        this.friendHelpIsVisible = true;
+      } 
+
 
     }
 
@@ -311,6 +324,11 @@ export default {
                     <button @click="this.modalIsVisible = false" id="stop-play">Yes, take me out</button>
                 </router-link>
             </div>
+        </div>
+
+        <div id="friend-container" v-if="this.friendHelpIsVisible == true" data-aos="fade-left">
+          <h3>I'm absolutely sure about the answer number {{ this.correctAnswer + 1 }}</h3>
+          <img src="/public/img/smart-friend.png" alt="friend-img">
         </div>
 
     </main>
@@ -643,6 +661,22 @@ export default {
                     scale: 1.1;
                 }
             }
+        }
+      }
+
+
+      #friend-container {
+        position: absolute;
+        right: 5%;
+        bottom: 0;
+        
+        width: 20%;
+        display: flex;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
         }
       }
     }
