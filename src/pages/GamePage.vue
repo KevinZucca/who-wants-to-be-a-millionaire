@@ -62,8 +62,9 @@ export default {
       confirmHelp: false,
       helpIndex: 0,
       helpUsed: [],
+      hiddenAnswers: [],
       friendHelpIsVisible: false,
-
+      publicOpinions: [],
     }
   },
 
@@ -165,6 +166,12 @@ export default {
           document.querySelector('.definitive').classList.remove('failed');
           document.querySelector('.definitive').classList.remove('correct');
           answersContainer.style.pointerEvents = ('auto');
+          
+          let allAnswers = document.querySelectorAll('.answer');
+          allAnswers.forEach((element) => {
+            element.style.display = 'block';
+          });
+
           this.friendHelpIsVisible = false;
           if(this.activeQuestionIndex >= this.QuestionAndAnswers.length){
             this.gameOver = true;
@@ -182,7 +189,6 @@ export default {
       let allAnswers = document.querySelectorAll('.answer');
       let answers = this.QuestionAndAnswers[this.activeQuestionIndex].answers;
       const helpImg = document.querySelectorAll('.help-img')[index];
-      let hiddenAnswers = [];
       let wrongAnswers = [];
 
       if(index == 0 && answers.length > 2) {
@@ -194,22 +200,16 @@ export default {
           }
         }
 
-        while (hiddenAnswers.length < 2) {
+        while (this.hiddenAnswers.length < 2) {
           let randomIndex = Math.floor(Math.random() * wrongAnswers.length);
-          if (!hiddenAnswers.includes(randomIndex)) {
-            hiddenAnswers.push(randomIndex);
+          if (!this.hiddenAnswers.includes(randomIndex)) {
+            this.hiddenAnswers.push(randomIndex);
           }
         }
 
-        hiddenAnswers.forEach((index) => {
+        this.hiddenAnswers.forEach((index) => {
           allAnswers[wrongAnswers[index]].style.display = 'none';
         });
-
-        setTimeout(() => {
-          hiddenAnswers.forEach((index) => {
-          allAnswers[wrongAnswers[index]].style.display = 'block';
-        });
-        }, 4000);
 
       } else if (index == 0 && answers.length <= 2) {
         alert("You can't use the fifty fifty on a true false question")
@@ -223,10 +223,13 @@ export default {
           }
         }
         this.friendHelpIsVisible = true;
-      } 
+        
+      } else if(index == 2) {
+        helpImg.classList.add('used');
+      }
 
 
-    }
+    },
 
   },
 
