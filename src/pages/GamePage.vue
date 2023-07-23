@@ -65,6 +65,9 @@ export default {
       hiddenAnswers: [],
       friendHelpIsVisible: false,
       publicOpinions: [],
+      majorPercentageAnswer: '',
+      otherPercentages: [],
+      graphIsVisible: false,
     }
   },
 
@@ -85,6 +88,7 @@ export default {
         //   ]
         // }
       });
+
     },
 
     addNewQuest(questionApi) {
@@ -94,7 +98,6 @@ export default {
         };
         
         this.QuestionAndAnswers.push(q);
-        
         q.question = questionApi.question;//nome domanda da questionApi
 
         q.answers.push({
@@ -122,6 +125,7 @@ export default {
     selectAnswer(index) {
         this.showConfirm = true;
         this.selectedAnswer = index;
+        console.log(this.QuestionAndAnswers[this.activeQuestionIndex])
     },
 
     checkAnswer() {
@@ -129,7 +133,7 @@ export default {
         this.yourAnswer = this.selectedAnswer;  
         this.yourAnswer = this.QuestionAndAnswers[this.activeQuestionIndex].answers[this.yourAnswer];
         const answersContainer = document.querySelector('#answers-container');
-
+        
 
         if(this.yourAnswer.correct == false) {
             this.solution = 'The answer is wrong';
@@ -166,6 +170,7 @@ export default {
           document.querySelector('.definitive').classList.remove('failed');
           document.querySelector('.definitive').classList.remove('correct');
           answersContainer.style.pointerEvents = ('auto');
+          this.graphIsVisible = false;
           
           let allAnswers = document.querySelectorAll('.answer');
           allAnswers.forEach((element) => {
@@ -226,16 +231,80 @@ export default {
         
       } else if(index == 2) {
         helpImg.classList.add('used');
+        this.graphIsVisible = true;
+        let correctPublicAnswerPercentage;
+        let difference;
+        let random1; 
+        let random2;
+        let random3;
+
+        
+        if(this.difficulty == 'easy') {
+          correctPublicAnswerPercentage = this.getRandomPercentage(70, 95);
+          this.majorPercentageAnswer = correctPublicAnswerPercentage;
+          difference = 100 - correctPublicAnswerPercentage;
+          random1 = this.getRandomPercentage(1, difference - 2);
+          random2 = this.getRandomPercentage(1, difference - random1 - 1);
+          random3 = difference - random1 - random2;
+          this.publicOpinions.push(random1, random2, random3);
+
+          for (let i = 0; i < this.QuestionAndAnswers[this.activeQuestionIndex].answers.length; i++) {
+            const graph = this.QuestionAndAnswers[this.activeQuestionIndex].answers[i];
+            if (graph.correct) {
+              graph.publicPercentage = this.majorPercentageAnswer;
+            } else {
+              graph.publicPercentage = this.publicOpinions.shift();
+          }
+        }
+        } else if(this.difficulty == 'medium') {
+          correctPublicAnswerPercentage = this.getRandomPercentage(40, 70);
+          difference = 100 - correctPublicAnswerPercentage;
+          random1 = this.getRandomPercentage(1, difference - 2);
+          random2 = this.getRandomPercentage(1, difference - random1 - 1);
+          random3 = difference - random1 - random2;
+          this.publicOpinions.push(random1, random2, random3);
+
+          for (let i = 0; i < this.QuestionAndAnswers[this.activeQuestionIndex].answers.length; i++) {
+            const graph = this.QuestionAndAnswers[this.activeQuestionIndex].answers[i];
+            if (graph.correct) {
+              graph.publicPercentage = correctPublicAnswerPercentage;
+            } else {
+              graph.publicPercentage = this.publicOpinions.shift();
+          }
+        }
+        } else if(this.difficulty == 'hard') {
+          correctPublicAnswerPercentage = this.getRandomPercentage(20, 45);
+          difference = 100 - correctPublicAnswerPercentage;
+          random1 = this.getRandomPercentage(1, difference - 2);
+          random2 = this.getRandomPercentage(1, difference - random1 - 1);
+          random3 = difference - random1 - random2;
+          this.publicOpinions.push(random1, random2, random3);
+
+          for (let i = 0; i < this.QuestionAndAnswers[this.activeQuestionIndex].answers.length; i++) {
+            const graph = this.QuestionAndAnswers[this.activeQuestionIndex].answers[i];
+            if (graph.correct) {
+              graph.publicPercentage = correctPublicAnswerPercentage;
+            } else {
+              graph.publicPercentage = this.publicOpinions.shift();
+          }
+        }
+        }
       }
 
 
     },
+
+    getRandomPercentage(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+
 
   },
 
   mounted() {
     AOS.init();
     this.generateQuests();
+    
 
   },
 
@@ -255,13 +324,7 @@ export default {
             Go back to menù
           </button>
         </div>
-        <!-- <div class="col-4" id="help-confirm" v-show="this.confirmHelp == true">
-         <h6>
-          Are you sure you want to use the "{{ this.helps[this.helpIndex].name }}" help ?
-         </h6>
-         <button>Yes</button>
-         <button @click="this.confirmHelp = false">No</button>
-        </div> -->
+
         <div class="col-4" id="helps-container">
           <div class="single-help" v-for="(help, index) in this.helps">
             <img class="help-img" @click="selectHelp(index)" :src="help.src" alt="help-img">
@@ -329,9 +392,22 @@ export default {
             </div>
         </div>
 
+        //FRIEND HELP
         <div id="friend-container" v-if="this.friendHelpIsVisible == true" data-aos="fade-left">
           <h3>I'm absolutely sure about the answer number {{ this.correctAnswer + 1 }}</h3>
           <img src="/public/img/smart-friend.png" alt="friend-img">
+        </div>
+
+        //GRAPH HELP
+        <div id="graph-container" data-aos="fade-right" v-if="this.graphIsVisible == true">
+          <div class="container">
+            <div class="single-graph" v-for="graph in this.QuestionAndAnswers[this.activeQuestionIndex].answers" data-aos="fade-in" data-aos-duration="2000">
+              <p>{{ graph.publicPercentage }}%</p>
+              <div class="graph" :style="{height: graph.publicPercentage + '%'}"></div>
+              <h6 v-html="graph.text"></h6>
+            </div>
+
+          </div>
         </div>
 
     </main>
@@ -680,6 +756,53 @@ export default {
           width: 100%;
           height: 100%;
           object-fit: contain;
+        }
+      }
+
+      #graph-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 25%;
+
+        background-color: rgb(0, 0, 0);
+        height: 100%;
+
+        .container {
+          display: flex;
+          justify-content: center;
+          flex-flow: row;
+          gap: 1em;
+
+          width: 90%;
+          height: 80%;
+
+          .single-graph {
+            display: flex;
+            flex-flow: column;
+            gap: 10px;
+            justify-content: flex-end;
+            align-items: center;
+
+            height: 100%;
+
+            p {
+              height: 5%;
+            }
+
+            h6 {
+              height: 5%;
+              text-align: center;
+            }
+            .graph {
+              width: 50px;
+              background-color: blue;
+            }
+          }
         }
       }
     }
