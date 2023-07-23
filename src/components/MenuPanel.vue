@@ -118,4 +118,20 @@ export default {
         }
     }
 }
+
+@media only screen and (max-width: 991px){
+    .my-container {
+        #menu {
+            h3 {
+                min-width: 180px;
+            }
+
+            .selection {
+                width: 120px;
+                font-size: 1.1em;
+            }
+
+        }
+    }
+}
 </style>

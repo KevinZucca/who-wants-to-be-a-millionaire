@@ -51,4 +51,16 @@ header {
             object-fit: cover;
         }
     }
+
+    @media only screen and (max-width: 991px) {
+        header {
+            height: 200px;
+
+            #logo-container {
+                width: 180px;
+                height: 180px;
+            }
+        }
+    }
+
 </style>

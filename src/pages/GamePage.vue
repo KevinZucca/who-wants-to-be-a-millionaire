@@ -68,8 +68,10 @@ export default {
       majorPercentageAnswer: '',
       otherPercentages: [],
       graphIsVisible: false,
+
     }
   },
+
 
   methods: {
     generateQuests() {
@@ -320,26 +322,27 @@ export default {
 
       <div class="row">
         <div class="col-4">
-          <button @click="this.modalIsVisible = !this.modalIsVisible" type="button" class="btn btn-primary modal-button" data-toggle="modal" data-target="#exampleModal">
-            Go back to menù
+          <button @click="this.modalIsVisible = !this.modalIsVisible" type="button" class="btn btn-primary modal-button lg-200" data-toggle="modal" data-target="#exampleModal">
+            <p id="menu-back" class="d-sm-none d-lg-block">Go back to menù</p>
+            <p id="left-arrow " class="fs-2 d-lg-none d-sm-block">&leftarrow;</p>
           </button>
         </div>
 
         <div class="col-4" id="helps-container">
           <div class="single-help" v-for="(help, index) in this.helps">
             <img class="help-img" @click="selectHelp(index)" :src="help.src" alt="help-img">
-            <p>{{help.name}}</p>
+            <p class="d-sm-none d-xl-block ">{{help.name}}</p>
           </div>
         </div>
       </div>
 
-      <div  v-if="this.gameOver" class="container">
+      <div  v-if="this.gameOver" class="container game-over-container">
         <p id="game-over">The game is over! You won</p>
         <p id="money">{{ this.towerLevels[this.activeTowerIndex] }} </p>
         <router-link class="nav-link" exact-active-class="active" :to="{ name: 'home'}"><button id="menu-back">Go back to menù</button></router-link>
       </div>
 
-      <div v-else class="container" data-aos="fade-right" data-aos-duration="1200">
+      <div v-else class="container main-container" data-aos="fade-right" data-aos-duration="1200">
         <div id="play-container" v-if="this.QuestionAndAnswers.length > 0">
           <h1>Question number {{ this.activeQuestionIndex + 1 }} / {{ this.QuestionAndAnswers.length }}</h1>
   
@@ -391,14 +394,14 @@ export default {
                 </router-link>
             </div>
         </div>
-
-        //FRIEND HELP
+        
+        <!-- FRIEND HELP -->
         <div id="friend-container" v-if="this.friendHelpIsVisible == true" data-aos="fade-left">
           <h3>I'm absolutely sure about the answer number {{ this.correctAnswer + 1 }}</h3>
           <img src="/public/img/smart-friend.png" alt="friend-img">
         </div>
 
-        //GRAPH HELP
+        <!-- GRAPH HELP -->
         <div id="graph-container" data-aos="fade-right" v-if="this.graphIsVisible == true">
           <div class="container">
             <div class="single-graph" v-for="graph in this.QuestionAndAnswers[this.activeQuestionIndex].answers" data-aos="fade-in" data-aos-duration="2000">
@@ -418,7 +421,7 @@ export default {
 <style lang='scss' scoped>
 
     main {
-        height: calc(100vh - 300px);
+        min-height: 800px;
         color: white;
         background-color: #11093a;
         position: relative;
@@ -429,15 +432,11 @@ export default {
           right: 100px;
         }
 
-        .container {
-            margin: 0 auto;
-            height: 100%;
-            padding-top: 50px;
-            width: 50%;
-
-            display: flex;
-            flex-flow: column;
-            align-items: center;
+        .container.game-over-container {
+          display: flex;
+          flex-flow: column;
+          justify-content: center;
+          align-items: center;
 
             #game-over {
               font-size: 3em;
@@ -454,17 +453,29 @@ export default {
               height: 100px;
               border-radius: 20px;
 
-                border: none;
-                background-color: #17198a;
-                color: white;
+              border: none;
+              background-color: #17198a;
+              color: white;
 
-                font-size: 1.5em;
+              font-size: 1.5em;
 
-                &:hover {
-                    background-color: #2e2f8a;
-                    cursor: pointer;
-                }
+              &:hover {
+                  background-color: #2e2f8a;
+                  cursor: pointer;
+              }
             }
+        }
+
+        .container.main-container {
+            margin: 0 auto;
+            height: 100%;
+            padding-top: 0px;
+            width: 50%;
+
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+
 
             #play-container {
               display: flex;
@@ -509,6 +520,7 @@ export default {
                     align-items: center;
 
                     width: 70%;
+                    min-height: 80px;
                     margin-bottom: 50px;
                 }
 
@@ -573,25 +585,27 @@ export default {
           height: 100%;
 
           background-image: url('https://cdn.wallpapersafari.com/79/79/4p27kj.jpg');
+          background-position: center;
           background-size: cover;
 
           z-index: 4;
 
           table {
-            width: 20%;
+            width: 40%;
             height: 60%;
             font-size: 2.5em;
 
             padding: 20px;
             background-color: #ffffff11;
             th {
+              height: 50px;
               color: #ff9900;
               display: flex;
               align-items: center;
               justify-content: center;
 
               &.active {
-                background-color: #090b8c;
+                background-color: #121496;
                 border: 1px solid rgba(255, 255, 255, 0.436);
               }
             }
@@ -807,55 +821,104 @@ export default {
       }
     }
 
+    @media only screen and (max-width: 575px) {
+      main {
+        .row {
+          padding-top: 20px;
+          .col-4 {
+            height: 100%;
 
-  //   @media only screen and (max-width: 990px) {
-   
-  //     .container {
-  //           padding-top: 20px;
+            &#helps-container {
+              p {
+                display:none;
+              }
+            }
 
-  //           #menu-back {
-  //             width: 100px;
-  //             height: 50px;
-  //             border-radius: 10px;
-  //             font-size: 1.2em;
+            #menu-back {
+              display:none
+            }
+          }
+        }
 
-  //               &:hover {
-  //                   background-color: #2e2f8a;
-  //                   cursor: pointer;
-  //               }
-  //           }
+        .container.main-container {
+          #play-container {
+            h1 {
+              max-width: 280px;
+              font-size: 1.6em;
+            } 
+          }
+        }
 
-  //           .block {
-  //               height: 0px;
-  //               width: 400px;
-  //               border: 2px solid white;
-  //               border-radius: 15px;
-  //               padding: 10px;
+      }
+    }
 
-  //               &#question {
-  //                   display: flex;
-  //                   justify-content: center;
-  //                   align-items: center;
+    @media only screen and (max-width: 991px) {
+      main {
+        height: 100vh;
+        .row {
+          height: 70px;
+          .col-4 {
+            button {
+              width: 80px;
+            }
 
-  //                   width: 70%;
-  //                   margin-bottom: 50px;
-  //               }
+            &#helps-container {
+              gap: 15px;
 
-  //           }
+              img {
+                width: 80px;
+              }
+            }
+          }
+        }
+
+         .container.game-over-container {
+            #game-over {
+              padding-top: 30px;
+              font-size: 2em;
+            }
+
+            #money {
+              font-size: 3em;
+            }
+
+            #menu-back {
+              width: 200px;
+              height: 80px;
+
+              font-size: 1.2em;
+
+              &:hover {
+                  background-color: #2e2f8a;
+                  cursor: pointer;
+              }
+            }
+        }
+
+        .container.main-container {
+          padding-top: 30px;
+            #play-container {
+              width: 120%;
+
+              .block {
+                font-size: .9em;
+                max-width: 95%;
+              }
+              h1 {
+                font-size: 2em;
+              }
+
+              #question {
+                width: 100%;
+                min-height: 120px;
+              }
+            }
+
+         
+
+          }
+        }
+}
 
 
-  //           #answers-container {
-  //               display: flex;
-  //               flex-flow: row wrap;
-  //               justify-content: center;
-  //               gap: 20em 3em;
-
-  //               width: 100%;
-  //               height: 100%;
-
-  //           }
-
-
-  //       }
-  // }
 </style>
