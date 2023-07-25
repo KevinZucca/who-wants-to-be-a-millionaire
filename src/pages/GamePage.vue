@@ -442,6 +442,7 @@ export default {
 <style lang='scss' scoped>
 
     main {
+        caret-color: transparent;
         min-height: 800px;
         color: white;
         background-color: #11093a;

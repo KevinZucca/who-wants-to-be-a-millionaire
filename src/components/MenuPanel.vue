@@ -44,6 +44,7 @@ export default {
 <style lang="scss" scoped>
 
 .my-container {
+    caret-color: transparent;
     height: calc(100vh - 300px);
     min-height: 800px;
     width: 100%;
