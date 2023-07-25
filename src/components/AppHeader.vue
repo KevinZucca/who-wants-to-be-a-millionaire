@@ -27,6 +27,7 @@ export default {
 header {
         height: 300px;
         background-color: #090b8c;
+        background: linear-gradient(0deg, #11093a 20%, #090b8c 80%);
         position: relative;
 
         display: flex;

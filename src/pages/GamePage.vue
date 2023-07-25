@@ -588,15 +588,22 @@ export default {
         #confirm-box {
             margin: 0 auto;
             max-width: 400px;
+            height: 50px;
 
             display: flex;
+            align-items:center;
             gap: 50px;
 
             margin-top: 50px;
 
+            p {
+              margin-bottom: 0;
+            }
+
             button {
                 width: 80px;
                 border-radius: 20px;
+                padding: 8px 15px;
 
                 border: none;
                 background-color: #17198a;
@@ -845,6 +852,8 @@ export default {
           background-color: rgba(255, 255, 255, 0.765);
           color: rgb(212, 75, 75);
           font-weight: bold;
+
+          cursor: pointer;
         }
 
         .container {
