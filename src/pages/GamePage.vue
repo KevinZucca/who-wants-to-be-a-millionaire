@@ -300,6 +300,17 @@ export default {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
 
+    viewHelps() {
+      const helps = document.querySelectorAll('.single-help');
+      helps.forEach(help => {
+        if (help.style.display == 'block') {
+          help.style.display = 'none';
+        } else {
+          help.style.display = 'block';
+        }
+      });
+    }
+
 
   },
 
@@ -333,6 +344,8 @@ export default {
             <img class="help-img" @click="selectHelp(index)" :src="help.src" alt="help-img">
             <p class="d-sm-none d-xl-block ">{{help.name}}</p>
           </div>
+
+          <button @click="viewHelps()" id="helps-button" type="button" class="btn btn-primary modal-button lg-200" data-toggle="modal" data-target="#exampleModal">Helps</button>
         </div>
       </div>
 
@@ -360,6 +373,19 @@ export default {
                   class="answer block">
                 </div>
             </div>
+
+             <!-- FRIEND HELP -->
+          <div id="friend-container" v-if="this.friendHelpIsVisible == true" data-aos="fade-left">
+            <span>
+              <lord-icon
+                src="https://cdn.lordicon.com/imamsnbq.json"
+                trigger="loop"
+                colors="primary:#121331,secondary:#121331"
+                style="width:80px;height:80px">
+              </lord-icon>
+            </span>
+            <i>I'm absolutely sure about the answer number {{ this.correctAnswer + 1 }} !</i>
+          </div>
       
   
           </div>
@@ -394,15 +420,10 @@ export default {
                 </router-link>
             </div>
         </div>
-        
-        <!-- FRIEND HELP -->
-        <div id="friend-container" v-if="this.friendHelpIsVisible == true" data-aos="fade-left">
-          <h3>I'm absolutely sure about the answer number {{ this.correctAnswer + 1 }}</h3>
-          <img src="/public/img/smart-friend.png" alt="friend-img">
-        </div>
 
         <!-- GRAPH HELP -->
         <div id="graph-container" data-aos="fade-right" v-if="this.graphIsVisible == true">
+          <span @click="this.graphIsVisible = false">X</span>
           <div class="container">
             <div class="single-graph" v-for="graph in this.QuestionAndAnswers[this.activeQuestionIndex].answers" data-aos="fade-in" data-aos-duration="2000">
               <p>{{ graph.publicPercentage }}%</p>
@@ -482,6 +503,27 @@ export default {
               align-items: center;
               flex-flow: column;
             }
+
+            #friend-container {
+              max-width: 70%;
+              height: 100px;
+              margin-top: 80px;
+
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              background-color: rgba(255, 255, 255, 0.781);
+              color: black;
+
+              i {
+                color: #2f318e;
+                font-weight: bold;
+                font-size: 1em;
+                padding: 6px;
+              }
+            }
+
 
             .block {
                 height: 50px;
@@ -604,6 +646,14 @@ export default {
               align-items: center;
               justify-content: center;
 
+              &:first-child {
+                font-size: .8em;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                
+              }
+
               &.active {
                 background-color: #121496;
                 border: 1px solid rgba(255, 255, 255, 0.436);
@@ -642,6 +692,10 @@ export default {
             &#helps-container {
               display: flex;
               justify-content: flex-end;
+
+              #helps-button {
+                display: none;
+              }
   
               img {
                   margin-top: 20px;
@@ -675,6 +729,11 @@ export default {
               flex-flow: column;
               align-items: center;
               gap: 10px;
+
+              p {
+                height: 30px;
+                text-align: center;
+              }
   
               &#help-confirm {
                 flex-grow: 1;
@@ -757,22 +816,6 @@ export default {
         }
       }
 
-
-      #friend-container {
-        position: absolute;
-        right: 5%;
-        bottom: 0;
-        
-        width: 20%;
-        display: flex;
-
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-        }
-      }
-
       #graph-container {
         display: flex;
         justify-content: center;
@@ -782,9 +825,26 @@ export default {
         top: 0;
         left: 0;
         width: 25%;
+        padding: 10px;
 
-        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.913);
         height: 100%;
+        width: 100%;
+
+        z-index: 2;
+
+        span {
+          position: absolute;
+          top: 5px;
+          right: 5px;
+
+          padding: 5px 8px;
+          border-radius: 3px;
+
+          background-color: rgba(255, 255, 255, 0.765);
+          color: rgb(212, 75, 75);
+          font-weight: bold;
+        }
 
         .container {
           display: flex;
@@ -792,8 +852,9 @@ export default {
           flex-flow: row;
           gap: 1em;
 
-          width: 90%;
+          width: 100%;
           height: 80%;
+          padding: 50px;
 
           .single-graph {
             display: flex;
@@ -803,17 +864,24 @@ export default {
             align-items: center;
 
             height: 100%;
+            width: calc(100% / 4);
 
             p {
               height: 5%;
             }
 
             h6 {
-              height: 5%;
+              height: 20px;
+              width: 100%;
               text-align: center;
+
+              white-space: nowrap; /* Impedisce al testo di andare a capo */
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
+            
             .graph {
-              width: 50px;
+              width: 100%;
               background-color: blue;
             }
           }
@@ -821,21 +889,59 @@ export default {
       }
     }
 
+
+
+    // media queries
+
+
     @media only screen and (max-width: 575px) {
       main {
         .row {
           padding-top: 20px;
+          &:first-child {
+            flex-flow: row;
+            padding-top: 10px;
+          }
           .col-4 {
             height: 100%;
 
+            button {
+              width: 40px;
+            }
+
             &#helps-container {
+              flex-flow: column;
+              align-items: flex-end;
+              justify-content: flex-start;
+              gap: 5px;
+
+              padding-right: 0;
+
+              #helps-button {
+                display: block;
+                margin: 10px 0;
+                order: -1;
+              }
+
+              .single-help {
+                background-color: rgba(0, 0, 0, 0.76);
+                padding: 10px;
+                z-index: 1;
+                display: none;
+
+                &:first-child {
+                  border-radius: 30% 0 0 0;
+                }
+
+                }
+
               p {
                 display:none;
               }
             }
 
             #menu-back {
-              display:none
+              display: none;
             }
           }
         }
@@ -843,9 +949,12 @@ export default {
         .container.main-container {
           #play-container {
             h1 {
-              max-width: 280px;
-              font-size: 1.6em;
+              font-size: .8em;
             } 
+
+            #question {
+              width: 100%;
+            }
           }
         }
 
@@ -857,17 +966,21 @@ export default {
         height: 100vh;
         .row {
           height: 70px;
+       
           .col-4 {
             button {
               width: 80px;
             }
 
-            &#helps-container {
-              gap: 15px;
-
-              img {
-                width: 80px;
+            &#helps-container {              
+              gap: 0;
+              
+              .single-help {      
+                img {
+                  width: 80px;
+                }
               }
+
             }
           }
         }
@@ -897,27 +1010,56 @@ export default {
 
         .container.main-container {
           padding-top: 30px;
+          width: 70%;
             #play-container {
-              width: 120%;
+              width: 140%;
 
               .block {
                 font-size: .9em;
                 max-width: 95%;
               }
               h1 {
-                font-size: 2em;
+                font-size: 1.7em;
               }
 
               #question {
-                width: 100%;
+                width: 400px;
+                max-width: 95%;
                 min-height: 120px;
+              }
+
+              #answers-container {
+                flex-flow: column;
+                align-items: center;
               }
             }
 
          
 
           }
+
+          #modal {
+            width: 70%;
+            height:40%;
+            padding: 1em;
+
+            strong {
+              font-size: 1.1em;
+            }
+
+            #selections {
+                display: flex;
+
+                button {
+                    font-size: .9em;
+                }
+            }
+          }
+
+
         }
+
+       
 }
 
 
